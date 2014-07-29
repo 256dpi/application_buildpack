@@ -1,0 +1,13 @@
+DEPENDENCIES
+  application_buildpack
+    path: .
+    metadata: true
+  fake
+    path: test/fixtures/cookbooks/fake
+
+GRAPH
+  application (4.1.4)
+  application_buildpack (0.0.1)
+    application (~> 4.0)
+  fake (0.0.1)
+    application_buildpack (>= 0.0.0)
