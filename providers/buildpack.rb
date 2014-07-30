@@ -60,20 +60,10 @@ end
 def install_ruby_dependencies
   %w(autoconf bind9-host bison build-essential daemontools dnsutils iputils-tracepath libcurl4-openssl-dev
     libevent-dev libglib2.0-dev libmcrypt-dev libssl-dev libssl0.9.8 libxml2-dev libxslt-dev netcat-openbsd
-    openssh-client openssh-server socat telnet zlib1g zlib1g-dev libyaml-dev libreadline6 libreadline6-dev).each do |pkg|
+    openssh-client openssh-server socat telnet zlib1g zlib1g-dev libyaml-dev libreadline6 libreadline6-dev
+    libpq-dev libpq5).each do |pkg|
     package pkg
   end
-
-  include_recipe 'ruby_build'
-
-  ruby_build_ruby '2.1.2' do
-    prefix_path '/var/application_buildpack/ruby'
-  end
-
-  directory '/var/application_buildpack/ruby/gems'
-
-  new_resource.buildpack_environment.merge! 'PATH' => "/var/application_buildpack/ruby/bin:#{ENV['PATH']}",
-                                            'GEM_HOME' => '/var/application_buildpack/ruby/gems'
 end
 
 def prepare_directories
