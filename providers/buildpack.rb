@@ -5,16 +5,25 @@ REPOSITORIES = {
   nodejs: 'https://github.com/heroku/heroku-buildpack-nodejs.git'
 }
 
+DEPENDENCIES = {
+  base: %w(git curl),
+  ruby: %w(autoconf bind9-host bison build-essential daemontools dnsutils iputils-tracepath libcurl4-openssl-dev
+    libevent-dev libglib2.0-dev libmcrypt-dev libssl-dev libssl0.9.8 libxml2-dev libxslt-dev netcat-openbsd
+    openssh-client openssh-server socat telnet zlib1g zlib1g-dev libyaml-dev libreadline6 libreadline6-dev
+    libpq-dev libpq5 libmysqlclient-dev),
+  nodejs: %w()
+}
+
 action :before_compile do
 end
 
 action :before_deploy do
-  install_base_dependencies
+  install_dependencies(:base)
   detect_buildpack
 end
 
 action :before_migrate do
-  install_buildpack_dependencies
+  install_dependencies
   prepare_directories
   sync_buildpack
   compile_buildpack
@@ -32,8 +41,8 @@ end
 
 protected
 
-def install_base_dependencies
-  %w(git curl).each do |pkg|
+def install_dependencies(which = nil)
+  DEPENDENCIES[which || new_resource.language].each do |pkg|
     package pkg
   end
 end
@@ -47,22 +56,6 @@ def detect_buildpack
     if REPOSITORIES.include?(new_resource.language)
       new_resource.buildpack_repository REPOSITORIES[new_resource.language]
     end
-  end
-end
-
-def install_buildpack_dependencies
-  self.send(:"install_#{new_resource.language}_dependencies")
-end
-
-def install_nodejs_dependencies
-end
-
-def install_ruby_dependencies
-  %w(autoconf bind9-host bison build-essential daemontools dnsutils iputils-tracepath libcurl4-openssl-dev
-    libevent-dev libglib2.0-dev libmcrypt-dev libssl-dev libssl0.9.8 libxml2-dev libxslt-dev netcat-openbsd
-    openssh-client openssh-server socat telnet zlib1g zlib1g-dev libyaml-dev libreadline6 libreadline6-dev
-    libpq-dev libpq5).each do |pkg|
-    package pkg
   end
 end
 
