@@ -18,8 +18,8 @@ action :before_compile do
 end
 
 action :before_deploy do
-  install_dependencies(:base)
   detect_buildpack
+  install_dependencies(:base)
 end
 
 action :before_migrate do
@@ -42,17 +42,12 @@ end
 protected
 
 def install_dependencies(which = nil)
-  DEPENDENCIES[which || new_resource.language].each do |pkg|
-    package pkg
-  end
+  which ||= new_resource.language
+  DEPENDENCIES[which].each{|pkg| package pkg } if DEPENDENCIES.key?(which)
 end
 
 def detect_buildpack
-  unless %w(ruby nodejs none).include?(new_resource.language.to_s)
-    raise "buildpack language not detected: #{new_resource.language}"
-  end
-
-  if new_resource.buildpack_repository.nil?
+  if new_resource.buildpack_repository.nil? && new_resource.language
     if REPOSITORIES.include?(new_resource.language)
       new_resource.buildpack_repository REPOSITORIES[new_resource.language]
     end

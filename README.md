@@ -24,11 +24,11 @@ The `buildpack` sub-resource LWRP deals with compiling an app using a buildpack.
 
 #### Attribute Parameters
 
-- `language`: The language to be used. Will be used to install dependencies and set the buildpack repository. Default: `:none`.
-- `scale`: The number of process to be starte for reach Procfile entry. Default: `{}`.
+- `language`: The language to be used. Will be used to install dependencies and set the buildpack repository. Default: `nil`.
+- `scale`: The number of processes to be started for each Procfile entry. Default: `{}`.
 - `buildpack_repository`: A custom buildpack repository that should be used instead. Default: `nil`.
 - `buildpack_revision`: The revision of the buildpack to be used. Default: `master`.
-- `buildpack_environmet`: Additional env variables to be passed to the buidlpack. Default: `{}`.
+- `buildpack_environmet`: Additional ENV variables to be passed to the buidlpack compile script. Default: `{}`.
 
 ## Usage
 
@@ -50,3 +50,7 @@ application 'example' do
   end
 end
 ```
+
+## Troubleshoot
+
+- If the buildpack fails to compile because some packages are missing, just define the packages in your `application` LWRP: `packages ['lib-imagemagick']`.
