@@ -52,6 +52,15 @@ action :before_migrate do
     group new_resource.group
     environment install_env
   end
+
+  template "#{new_resource.release_path}/buildpack_exec" do
+    source 'exec.sh.erb'
+    cookbook 'application_buildpack'
+    owner new_resource.owner
+    group new_resource.group
+    mode '0755'
+    variables root: new_resource.release_path
+  end
 end
 
 action :before_symlink do
