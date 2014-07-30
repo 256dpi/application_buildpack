@@ -48,7 +48,7 @@ def install_dependencies(which = nil)
 end
 
 def detect_buildpack
-  unless %w(ruby nodejs).include?(new_resource.language.to_s)
+  unless %w(ruby nodejs none).include?(new_resource.language.to_s)
     raise "buildpack language not detected: #{new_resource.language}"
   end
 
