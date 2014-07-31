@@ -28,6 +28,11 @@ function start() {
   fi
 
   cd <%= @current_path %>
+
+  export HOME=<%= @current_path %>
+  for file in <%= @current_path %>/.profile.d/*; do source $file; done
+  hash -r
+
   <%= @command %> >> $LOG_FILE 2>&1 &
   PID="$!"
 
