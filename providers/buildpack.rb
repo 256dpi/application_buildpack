@@ -15,7 +15,7 @@ DEPENDENCIES = {
 }
 
 DEFAULT_ENV = {
-  'STACK' => 'chef'
+  'STACK' => 'cedar'
 }
 
 action :before_compile do
