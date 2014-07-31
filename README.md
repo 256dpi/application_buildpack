@@ -73,3 +73,4 @@ end
 ## Troubleshoot
 
 - If the buildpack fails to compile because some packages are missing, just define the packages in your `application` LWRP: `packages ['lib-imagemagick']`.
+- If the buildpack fails to compile due to a missing `/app` directory then the buidlpack uses hardcoded heroku paths. Create an issue on the repository or fork it. 

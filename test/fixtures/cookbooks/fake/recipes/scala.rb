@@ -1,5 +1,6 @@
 application 'scala' do
   path '/srv/scala'
+  action :force_deploy
 
   owner 'vagrant'
   group 'vagrant'

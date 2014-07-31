@@ -1,4 +1,3 @@
-include Chef::DSL::IncludeRecipe
 include Chef::Mixin::ShellOut
 
 REPOSITORIES = {
@@ -16,10 +15,10 @@ DEPENDENCIES = {
 }
 
 action :before_compile do
+  detect_buildpack
 end
 
 action :before_deploy do
-  detect_buildpack
   install_dependencies(:base)
 end
 
@@ -29,6 +28,7 @@ action :before_migrate do
   sync_buildpack
   compile_buildpack
   write_wrapper
+  wrap_procfile
 end
 
 action :before_symlink do
@@ -104,5 +104,14 @@ def write_wrapper
     group new_resource.group
     mode '0755'
     variables root: new_resource.release_path
+  end
+end
+
+def wrap_procfile
+  command = 'awk \'{printf $1 " ./buildpack_exec"; $1 = ""; print $0}\' Procfile > Procfile.new && mv Procfile.new Procfile'
+  execute command do
+    cwd new_resource.release_path
+    user new_resource.owner
+    group new_resource.group
   end
 end
