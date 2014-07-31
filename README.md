@@ -45,6 +45,12 @@ scale do
 end
 
 scale do
+  # scale with multiple processes
+  # PROCESS_NUM env variable will indicate the processes id
+  web 4
+end
+
+scale do
   # send a custom signal on reload to gracefully stop the process
   web 1, reload: 'USR1'
 end
