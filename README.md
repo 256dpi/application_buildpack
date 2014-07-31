@@ -51,6 +51,25 @@ application 'example' do
 end
 ```
 
+A sample recipe that deploys an scala app using a custom buildpack
+
+```ruby
+application 'example' do
+  path '/srv/example'
+
+  owner 'ubuntu'
+  group 'ubuntu'
+
+  packages ['git']
+  repository 'https://github.com/heroku/scala-sample.git'
+
+  buildpack do
+    buildpack_repository 'https://github.com/heroku/heroku-buildpack-scala.git'
+    scale web: 1
+  end
+end
+```
+
 ## Troubleshoot
 
 - If the buildpack fails to compile because some packages are missing, just define the packages in your `application` LWRP: `packages ['lib-imagemagick']`.

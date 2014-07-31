@@ -1,4 +1,5 @@
 include Chef::DSL::IncludeRecipe
+include Chef::Mixin::ShellOut
 
 REPOSITORIES = {
   ruby: 'https://github.com/heroku/heroku-buildpack-ruby.git',
@@ -75,12 +76,23 @@ end
 def compile_buildpack
   compile_script = "#{new_resource.path}/shared/buildpack_source/bin/compile"
   cache_directory = "#{new_resource.path}/shared/buildpack_cache"
+  command = "#{compile_script} #{new_resource.release_path} #{cache_directory}"
 
-  execute "#{compile_script} #{new_resource.release_path} #{cache_directory}" do
-    cwd new_resource.release_path
-    user new_resource.owner
-    group new_resource.group
-    environment new_resource.buildpack_environment
+  converge_by(nil) do
+    Chef::Log.info('start buildpack compilation')
+    Chef::Log.info("run: #{command}")
+    cmd = Mixlib::ShellOut.new(command, {
+      timeout: 3600,
+      log_level: :info,
+      cwd: new_resource.release_path,
+      user: new_resource.owner,
+      group: new_resource.group,
+      environment: new_resource.buildpack_environment
+    })
+    cmd.live_stream = STDOUT
+    cmd.run_command
+    cmd.error!
+    Chef::Log.info('compiled successfully')
   end
 end
 

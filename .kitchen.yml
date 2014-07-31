@@ -13,4 +13,5 @@ suites:
     run_list:
       - recipe[fake::nodejs]
       - recipe[fake::rails]
+      - recipe[fake::scala]
     attributes:
