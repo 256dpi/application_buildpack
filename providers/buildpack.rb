@@ -27,8 +27,6 @@ action :before_migrate do
   prepare_directories
   sync_buildpack
   compile_buildpack
-  write_wrapper
-  wrap_procfile
 end
 
 action :before_symlink do
@@ -98,25 +96,5 @@ def compile_buildpack
 
       Chef::Log.info('compiled successfully')
     end
-  end
-end
-
-def write_wrapper
-  template "#{new_resource.release_path}/buildpack_exec" do
-    source 'buildpack/exec.sh.erb'
-    cookbook 'application_buildpack'
-    owner new_resource.owner
-    group new_resource.group
-    mode '0755'
-    variables root: new_resource.release_path
-  end
-end
-
-def wrap_procfile
-  command = 'awk \'{printf $1 " ./buildpack_exec"; $1 = ""; print $0}\' Procfile > Procfile.new && mv Procfile.new Procfile'
-  execute command do
-    cwd new_resource.release_path
-    user new_resource.owner
-    group new_resource.group
   end
 end

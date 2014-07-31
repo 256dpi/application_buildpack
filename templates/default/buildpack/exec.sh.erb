@@ -1,6 +1,0 @@
-#!/bin/bash
-export HOME=<%= @root %>
-for file in <%= @root %>/.profile.d/*; do source $file; done
-hash -r
-cd <%= @root %>
-"$@"
