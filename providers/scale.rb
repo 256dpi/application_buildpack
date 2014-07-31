@@ -30,7 +30,7 @@ protected
 def ensure_restart_command
   unless new_resource.restart_command
     new_resource.restart_command do
-      execute 'application_procfile_reload' do
+      execute 'application_buildpack_reload' do
         command "touch /var/local/#{new_resource.name}/*.reload"
       end
     end
@@ -98,7 +98,7 @@ def create_lock_directory(helper)
 end
 
 def create_environment_sh(helper)
-  execute 'application_procfile_reload' do
+  execute 'application_buildpack_reload' do
     command "touch #{::File.join(helper.lock_path, '*.reload')}"
     action :nothing
   end
@@ -113,7 +113,7 @@ def create_environment_sh(helper)
       path_prefix: new_resource.application.environment['PATH_PREFIX'],
       environment_attributes: new_resource.application.environment
     })
-    notifies :run, 'execute[application_procfile_reload]', :delayed
+    notifies :run, 'execute[application_buildpack_reload]', :delayed
   end
 end
 
@@ -137,7 +137,7 @@ def create_initscript(helper, type, command)
 end
 
 def create_monitrc(helper, type, number, options)
-  execute 'application_procfile_monit_reload' do
+  execute 'application_buildpack_monit_reload' do
     command 'monit reload'
     action :nothing
   end
@@ -156,6 +156,6 @@ def create_monitrc(helper, type, number, options)
       pid_prefix: ::File.join(helper.pid_path, type),
       lock_path: helper.lock_path
     })
-    notifies :run, 'execute[application_procfile_monit_reload]', :immediately
+    notifies :run, 'execute[application_buildpack_monit_reload]', :immediately
   end
 end
