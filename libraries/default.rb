@@ -22,11 +22,11 @@ class ApplicationHelper
   end
 
   def init_path(type)
-    @init_path ||= ::File.join('/etc', 'init.d', "#{name}-#{type}")
+    ::File.join('/etc', 'init.d', "#{name}-#{type}")
   end
 
   def monitrc_path(type)
-    @monitrc_path ||= ::File.join('/etc', 'monit', 'conf.d', "#{name}-#{type}.conf")
+    ::File.join('/etc', 'monit', 'conf.d', "#{name}-#{type}.conf")
   end
 
   def environment_sh_path
