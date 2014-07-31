@@ -14,6 +14,10 @@ DEPENDENCIES = {
   nodejs: %w()
 }
 
+DEFAULT_ENV = {
+  'STACK' => 'chef'
+}
+
 action :before_compile do
   detect_buildpack
 end
@@ -87,7 +91,7 @@ def compile_buildpack
         cwd: new_resource.release_path,
         user: new_resource.owner,
         group: new_resource.group,
-        environment: new_resource.buildpack_environment
+        environment: DEFAULT_ENV.merge(new_resource.buildpack_environment)
       })
 
       cmd.live_stream = STDOUT
