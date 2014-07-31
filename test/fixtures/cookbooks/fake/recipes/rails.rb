@@ -8,6 +8,8 @@ application 'rails' do
   packages ['git']
   repository 'https://github.com/heroku/ruby-rails-sample.git'
 
+  environment 'PORT' => 8000
+
   buildpack do
     language :ruby
   end

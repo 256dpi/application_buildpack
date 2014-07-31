@@ -45,6 +45,7 @@ def ensure_directories(helper)
     recursive true
     action :create
   end
+
   directory helper.pid_path do
     owner 'root'
     group 'root'
@@ -52,6 +53,7 @@ def ensure_directories(helper)
     recursive true
     action :create
   end
+
   directory helper.log_path do
     owner 'root'
     group 'root'
@@ -100,6 +102,7 @@ def create_environment_sh(helper)
     command "touch #{::File.join(helper.lock_path, '*.reload')}"
     action :nothing
   end
+
   template helper.environment_sh_path do
     source 'scale/environment.sh.erb'
     cookbook 'application_buildpack'
@@ -107,8 +110,8 @@ def create_environment_sh(helper)
     group 'root'
     mode '0755'
     variables ({
-      path_prefix: new_resource.environment['PATH_PREFIX'],
-      environment_attributes: new_resource.environment
+      path_prefix: new_resource.application.environment['PATH_PREFIX'],
+      environment_attributes: new_resource.application.environment
     })
     notifies :run, 'execute[application_procfile_reload]', :delayed
   end
