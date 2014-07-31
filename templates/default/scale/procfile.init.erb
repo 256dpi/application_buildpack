@@ -1,0 +1,78 @@
+#!/bin/bash
+
+source '<%= @environment_sh_path %>'
+
+PID_FILE=${PID_FILE:-<%= @pid_path %>/<%= @type %>.pid}
+LOG_FILE=${LOG_FILE:-<%= @log_path %>/<%= @type %>.log}
+
+STATUS_RUNNING=0
+STATUS_DEAD_WITH_PID=1
+STATUS_UNKNOWN=4
+
+PATH=${PATH}:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
+
+function checkpid() {
+  [ -z $1 ] && return 1
+  [ -d /proc/$1 ] && return 0
+  return 1
+}
+
+function start() {
+  echo -n "Starting process $0 ..."
+  if [ -s $PID_FILE ]; then
+    read pid < $PID_FILE
+    if checkpid $pid 2>&1; then
+      echo "[FAIL] process with PID ${pid} is running."
+      exit $STATUS_UNKNOWN
+    fi
+  fi
+
+  cd <%= @current_path %>
+  <%= @command %> >> $LOG_FILE 2>&1 &
+  PID="$!"
+
+  if [ $? -eq 0 ]; then
+    echo $PID > $PID_FILE
+  else
+    exit $STATUS_UNKNOWN
+  fi
+}
+
+function stop() {
+  echo -n "Terminating process $0 ..."
+  if [ -s $PID_FILE ]; then
+    read pid < $PID_FILE
+    if checkpid $pid 2>&1; then
+      kill -SIGTERM $pid
+      if [ $? -eq 0 ]; then
+        echo $! > $PID_FILE
+        echo "[OK]"
+        rm -rf $PID_FILE
+      else
+        echo "[FAIL]"
+        exit $STATUS_UNKNOWN
+      fi
+    else
+      echo "[FAIL] process with PID ${pid} does not exist"
+      exit $STATUS_DEAD_WITH_PID
+    fi
+  else
+    echo "[FAIL] pid file $PID_FILE is not found"
+    exit $STATUS_UNKOWN
+  fi
+}
+
+case "$1" in
+  start)
+    start
+  ;;
+  stop)
+    stop
+  ;;
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 0
+  ;;
+esac
+
+exit $STATUS_RUNNING

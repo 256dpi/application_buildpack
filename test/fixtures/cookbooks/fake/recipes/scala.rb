@@ -10,6 +10,9 @@ application 'scala' do
 
   buildpack do
     buildpack_repository 'https://github.com/heroku/heroku-buildpack-scala.git'
-    scale web: 1
+  end
+
+  scale do
+    web 1
   end
 end

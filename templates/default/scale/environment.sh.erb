@@ -1,0 +1,12 @@
+#!/bin/bash
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+<% if @path_prefix %>
+export PATH_PREFIX=<%= @path_prefix %>
+export PATH=<%= @path_prefix %>:${PATH}
+<% end %>
+<% @environment_attributes.each do |k,v| %>
+export <%= "#{k}='#{v}'" %>
+<% end %>

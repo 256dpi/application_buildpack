@@ -10,6 +10,9 @@ application 'rails' do
 
   buildpack do
     language :ruby
-    scale web: 1
+  end
+
+  scale do
+    web 1
   end
 end

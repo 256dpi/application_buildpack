@@ -98,7 +98,7 @@ end
 
 def write_wrapper
   template "#{new_resource.release_path}/buildpack_exec" do
-    source 'exec.sh.erb'
+    source 'buildpack/exec.sh.erb'
     cookbook 'application_buildpack'
     owner new_resource.owner
     group new_resource.group
