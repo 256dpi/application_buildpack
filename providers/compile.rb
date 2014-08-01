@@ -45,14 +45,14 @@ end
 protected
 
 def install_dependencies(which = nil)
-  which ||= new_resource.language
+  which ||= new_resource.buildpack
   DEPENDENCIES[which].each{|pkg| package pkg } if DEPENDENCIES.key?(which)
 end
 
 def detect_buildpack
-  if new_resource.buildpack_repository.nil? && new_resource.language
-    if REPOSITORIES.include?(new_resource.language)
-      new_resource.buildpack_repository REPOSITORIES[new_resource.language]
+  if new_resource.buildpack_repository.nil? && new_resource.buildpack
+    if REPOSITORIES.include?(new_resource.buildpack)
+      new_resource.buildpack_repository REPOSITORIES[new_resource.buildpack]
     end
   end
 end

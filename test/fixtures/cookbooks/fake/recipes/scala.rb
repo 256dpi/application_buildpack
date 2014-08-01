@@ -8,7 +8,7 @@ application 'scala' do
   packages ['git']
   repository 'https://github.com/heroku/scala-sample.git'
 
-  buildpack do
+  compile do
     buildpack_repository 'https://github.com/heroku/heroku-buildpack-scala.git'
   end
 

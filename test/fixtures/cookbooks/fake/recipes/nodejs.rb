@@ -8,7 +8,7 @@ application 'nodejs' do
   packages ['git']
   repository 'https://github.com/heroku/node-js-sample.git'
 
-  buildpack do
-    language :nodejs
+  compile do
+    buildpack :nodejs
   end
 end

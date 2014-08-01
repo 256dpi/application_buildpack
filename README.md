@@ -12,27 +12,27 @@ Chef 11.0.0 or higher required (for Chef environment use).
 
 The following Opscode cookbooks are dependencies:
 
-* monit
-* application
+* [monit](https://github.com/phlipper/chef-monit)
+* [application](https://github.com/poise/application)
 
 ## Resources/Providers
 
 The LWRP provided by this cookbook is not meant to be used by itself; make sure you are familiar with the `application` cookbook before proceeding.
 
-### `buildpack`
+### `compile`
 
-The `buildpack` sub-resource LWRP deals with compiling an app using a buildpack.
+The `compile` sub-resource LWRP deals with compiling an app using a buildpack.
 
 #### Attribute Parameters
 
-- `language`: The language to be used. Will be used to install dependencies and set the buildpack repository. Default: `nil`.
+- `buildpack`: The buildpack to be used. Will be used to install dependencies and set the buildpack repository. Default: `nil`.
 - `buildpack_repository`: A custom buildpack repository that should be used instead. Default: `nil`.
 - `buildpack_revision`: The revision of the buildpack to be used. Default: `master`.
 - `buildpack_environmet`: Additional ENV variables to be passed to the buidlpack compile script. Default: `{}`.
 
 ### `scale`
 
-The `buildpack` sub-resource LWRP deals with configuring monit to start processes described in your Procfile.
+The `scale` sub-resource LWRP deals with configuring monit to start processes described in your Procfile.
 
 #### Attribute Parameters
 
@@ -42,17 +42,13 @@ You can pass any attribute combination to `scale` the name of the attribute will
 scale do
   # scale with one process
   web 1
-end
-
-scale do
+  
   # scale with multiple processes
   # PROCESS_NUM env variable will indicate the processes id
-  web 4
-end
-
-scale do
+  worker 4
+  
   # send a custom signal on reload to gracefully stop the process
-  web 1, reload: 'USR1'
+  guard 1, reload: 'USR1'
 end
 ```
 
@@ -72,8 +68,8 @@ application 'example' do
   
   environment 'PORT' => 8000
 
-  buildpack do
-    language :ruby
+  compile do
+    buildpack :ruby
   end
   
   scale do
@@ -94,7 +90,7 @@ application 'example' do
   packages ['git']
   repository 'https://github.com/heroku/scala-sample.git'
 
-  buildpack do
+  compile do
     buildpack_repository 'https://github.com/heroku/heroku-buildpack-scala.git'
   end
   

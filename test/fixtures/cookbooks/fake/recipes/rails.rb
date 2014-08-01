@@ -10,8 +10,8 @@ application 'rails' do
 
   environment 'PORT' => 8000
 
-  buildpack do
-    language :ruby
+  compile do
+    buildpack :ruby
   end
 
   scale do
