@@ -4,6 +4,11 @@
 
 This cookbook is designed to be able to deploy applications using heroku buildpacks.
 
+The following buildpacks are tested and supported:
+
+* ruby
+* nodejs
+
 Note that this cookbook is based on the `application` cookbook; you will find general documentation in that cookbook.
 
 ## Requirements
@@ -25,7 +30,7 @@ The `compile` sub-resource LWRP deals with compiling an app using a buildpack.
 
 #### Attribute Parameters
 
-- `buildpack`: The buildpack to be used. Will be used to install dependencies and set the buildpack repository. Default: `nil`.
+- `buildpack`: The buildpack to be used. Will be used to install dependencies and set the buildpack repository. Default: `nil`. Options: `:ruby, :nodejs`
 - `buildpack_repository`: A custom buildpack repository that should be used instead. Default: `nil`.
 - `buildpack_revision`: The revision of the buildpack to be used. Default: `master`.
 - `buildpack_environmet`: Additional ENV variables to be passed to the buidlpack compile script. Default: `{}`.
