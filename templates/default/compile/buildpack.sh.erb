@@ -1,0 +1,8 @@
+#!/bin/bash
+
+export HOME=$(pwd)
+for file in $(pwd)/.profile.d/*; do source $file; done
+source <%= @path %>/shared/environment.sh
+hash -r
+
+"$@"

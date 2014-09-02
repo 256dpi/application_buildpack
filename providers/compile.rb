@@ -31,6 +31,7 @@ action :before_migrate do
   prepare_directories
   sync_buildpack
   compile_buildpack
+  write_and_link_tool
 end
 
 action :before_symlink do
@@ -100,5 +101,24 @@ def compile_buildpack
 
       Chef::Log.info('compiled successfully')
     end
+  end
+end
+
+def write_and_link_tool
+  tool = "#{new_resource.path}/shared/buildpack"
+
+  template tool do
+    cookbook 'application_buildpack'
+    source 'compile/buildpack.sh.erb'
+    owner new_resource.owner
+    group new_resource.group
+    mode '0755'
+    variables ({
+      path: new_resource.path
+    })
+  end
+
+  link "#{new_resource.release_path}/buildpack" do
+    to tool
   end
 end
