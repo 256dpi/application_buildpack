@@ -120,7 +120,7 @@ end
 def create_initscript(helper, type, command)
   template helper.init_path(type) do
     cookbook 'application_buildpack'
-    source 'scale/procfile.init.erb'
+    source 'scale/procfile.init.sh.erb'
     owner 'root'
     group 'root'
     mode '0755'
