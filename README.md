@@ -105,6 +105,15 @@ application 'example' do
 end
 ```
 
+## Buildpack Tool
+
+While on the server you can use the `buildpack` tool to run commands in the environment of your app:
+
+```bash
+$ cd /srv/app/current
+$ ./buildpack rake -T
+```
+
 ## Troubleshoot
 
 - If the buildpack fails to compile because some packages are missing, just define the packages in your `application` LWRP: `packages ['lib-imagemagick']`.
