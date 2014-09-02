@@ -7,7 +7,7 @@ DEPENDENCIES
 
 GRAPH
   application (4.1.4)
-  application_buildpack (0.0.1)
+  application_buildpack (0.0.3)
     application (~> 4.0)
     monit (>= 0.0.0)
   fake (0.0.1)
