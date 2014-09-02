@@ -11,4 +11,8 @@ application 'nodejs' do
   compile do
     buildpack :nodejs
   end
+
+  scale do
+    web 1
+  end
 end
