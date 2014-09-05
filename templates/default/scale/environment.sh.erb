@@ -8,5 +8,5 @@ export PATH_PREFIX=<%= @path_prefix %>
 export PATH=<%= @path_prefix %>:${PATH}
 <% end %>
 <% @environment_attributes.each do |k,v| %>
-export <%= "#{k}='#{v}'" %>
+export <%= "#{k.upcase}='#{v}'" %>
 <% end %>

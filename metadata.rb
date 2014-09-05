@@ -1,5 +1,5 @@
 name 'application_buildpack'
-version '0.0.3'
+version '0.0.4'
 license 'MIT'
 
 maintainer '256dpi'
