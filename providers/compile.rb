@@ -10,7 +10,7 @@ DEPENDENCIES = {
   ruby: %w(autoconf bind9-host bison build-essential daemontools dnsutils iputils-tracepath libcurl4-openssl-dev
     libevent-dev libglib2.0-dev libmcrypt-dev libssl-dev libssl0.9.8 libxml2-dev libxslt-dev netcat-openbsd
     openssh-client openssh-server socat telnet zlib1g zlib1g-dev libyaml-dev libreadline5 libreadline6 libreadline6-dev
-    libpq-dev libpq5 libmysqlclient-dev),
+    libpq-dev libpq5),
   nodejs: %w()
 }
 
