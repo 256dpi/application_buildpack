@@ -41,7 +41,7 @@ The `scale` sub-resource LWRP deals with configuring monit to start processes de
 
 #### Attribute Parameters
 
-You can pass any attribute combination to `scale` the name of the attribute will be matched to a process describe in your Procfile.
+You can pass any attribute combination to `scale` the name of the attribute will be matched to a process described in your Procfile.
 
 ```ruby
 scale do
@@ -54,6 +54,9 @@ scale do
   
   # send a custom signal on reload to gracefully stop the process
   guard 1, reload: 'USR1'
+
+  # override or define missing entry
+  whatever 1, run: '/bin/app-that-is-missing'
 end
 ```
 

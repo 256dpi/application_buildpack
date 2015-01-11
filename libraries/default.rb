@@ -42,7 +42,7 @@ class ApplicationHelper
   end
 
   def procfile
-    @procfile ||= YAML.load_file(self.procfile_path)
+    @procfile ||= procfile? ? YAML.load_file(self.procfile_path) : {}
   end
 
   def procfile_processes

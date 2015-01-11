@@ -65,17 +65,23 @@ end
 
 def update_monit_files(helper)
   new_resource.processes.each do |type, options|
-    if helper.procfile_processes.include?(type)
-      create_lock_directory(helper)
-      create_lock_file(helper, type, 'restart')
-      create_lock_file(helper, type, 'reload')
-      create_environment_sh(helper)
-      create_initscript(helper, type, helper.process(type))
-      create_monitrc(helper, type, options[0], options[1])
+    if options[1] && options[1].key?(:run)
+      create_monit_files(helper, type, options, options[1][:run])
+    elsif helper.procfile_processes.include?(type)
+      create_monit_files(helper, type, options)
     else
       Chef::Log.warn("missing procfile entry for '#{type}'")
     end
   end
+end
+
+def create_monit_files(helper, type, options, process_override = nil)
+  create_lock_directory(helper)
+  create_lock_file(helper, type, 'restart')
+  create_lock_file(helper, type, 'reload')
+  create_environment_sh(helper)
+  create_initscript(helper, type, process_override || helper.process(type))
+  create_monitrc(helper, type, options[0], options[1])
 end
 
 def create_lock_file(helper, type, suffix)
